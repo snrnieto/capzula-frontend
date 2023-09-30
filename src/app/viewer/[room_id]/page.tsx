@@ -10,11 +10,11 @@ export default function Home() {
   const { room_id } = useParams();
 
   // Replace with your server URL
-  const socket = io(process.env.BACKEND_URL ?? "localhost:3001", {
+  const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL ?? "localhost:3001", {
     transports: ["websocket"],
   });
 
-  const myPeer = new Peer();
+  const myPeer = typeof window !== "undefined" ? new Peer() : ({} as Peer);
   const videoPlayer = useRef<HTMLVideoElement>({} as HTMLVideoElement);
   const reload = window.location.reload.bind(window.location);
 

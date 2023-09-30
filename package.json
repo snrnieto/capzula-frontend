@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bufferutil": "^4.0.7",
     "next": "latest",
     "peerjs": "^1.5.1",
     "react": "latest",
     "react-dom": "latest",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "utf-8-validate": "^5.0.10",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

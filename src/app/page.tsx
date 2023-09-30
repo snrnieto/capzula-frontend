@@ -1,18 +1,17 @@
 "use client";
 import io from "socket.io-client";
-import Peer from "peerjs";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import Peer from "peerjs";
 
 export default function Home() {
-  // Replace with your server URL
-  const socket = io(process.env.BACKEND_URL ?? "localhost:3001", {
+  const peerClient = typeof window !== "undefined" ? new Peer() : ({} as Peer);
+  const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL ?? "localhost:3000", {
     transports: ["websocket"],
   });
 
   let myuuid = uuidv4();
 
-  const peerClient = new Peer();
   const videoRecorder = useRef<HTMLVideoElement>({} as HTMLVideoElement);
 
   function connectToNewViewer(viewerId: string, stream: MediaStream) {
