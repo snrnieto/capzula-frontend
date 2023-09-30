@@ -103,19 +103,11 @@ export default function Home() {
     },
     {
       image:
-        "https://capzula.com/wp-content/uploads/2023/09/dEYgt4y385sw6dMe-768x1152.jpeg",
-      name: "Thin Bar Fringe Earrings",
-      store: "Fame Accesories",
-      colors: ["yellow"],
-      url: "https://capzula.com/product/thin-bar-fringe-earrings/",
-    },
-    {
-      image:
-        "https://capzula.com/wp-content/uploads/2023/09/dEYgt4y385sw6dMe-768x1152.jpeg",
-      name: "Thin Bar Fringe Earrings",
-      store: "Fame Accesories",
-      colors: ["yellow"],
-      url: "https://capzula.com/product/thin-bar-fringe-earrings/",
+        "https://capzula.com/wp-content/uploads/2023/09/FFaIJ78MehjSK6Bf.png",
+      name: "Bakatá ShoesQ",
+      store: "Bakatá ShoesQ",
+      colors: ["beige"],
+      url: "https://capzula.com/product/bakata-shoesq-2/",
     },
   ];
   return (
