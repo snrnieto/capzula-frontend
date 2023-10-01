@@ -1,13 +1,15 @@
 "use client";
 import io from "socket.io-client";
 import Peer from "peerjs";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
-  const { room_id } = useParams();
+interface LiveRoomProps {
+  room_id: string;
+}
+export const LiveRoom = ({ room_id }: LiveRoomProps) => {
   const router = useRouter();
 
   // Replace with your server URL
@@ -17,10 +19,9 @@ export default function Home() {
 
   const myPeer = typeof window !== "undefined" ? new Peer() : ({} as Peer);
   const videoPlayer = useRef<HTMLVideoElement>({} as HTMLVideoElement);
-  const reload = () => router.push("/viewer");
+  const reload = () => {};
 
   useEffect(() => {
-    videoPlayer.current.muted = true;
     console.log("Join to room id: " + room_id);
 
     /**
@@ -111,12 +112,18 @@ export default function Home() {
       url: "https://capzula.com/product/bakata-shoesq-2/",
     },
   ];
+
+  const [openProducts, setOpenProducts] = useState(false);
   return (
-    <main>
-      <div className="flex flex-col-reverse md:flex-row gap-14 mt-10">
-        <div className="h-full max-h-[300px] md:max-h-[600px] overflow-y-auto px-6">
+    <main className="h-screen snap-start object-fill relative max-h-[700px]">
+      <div className="flex flex-col-reverse md:flex-row gap-14 h-full">
+        <div
+          className={`h-full max-h-[600px] z-10 bg-white rounded-t-3xl overflow-y-auto px-6 absolute bottom-0 ${
+            openProducts ? "block" : "hidden"
+          }`}
+        >
           <h1 className="font-bold text-2xl mb-4">Productos</h1>
-          <div className="flex flex-col gap-10 h-full overflow-y-auto pb-24 pr-2">
+          <div className="flex flex-col gap-10 h-full overflow-y-auto pb-40 pr-2">
             {products.map((product) => (
               <div className="flex gap-5 h-full w-full" key={product.url}>
                 <div className="relative min-w-[100px] md:min-w-[150px] min-h-[150px]">
@@ -160,12 +167,20 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <div
+          className="absolute bottom-0 py-2 bg-white bg-opacity-70 text-center w-full font-bold text-xl z-10"
+          onClick={() => setOpenProducts(true)}
+          hidden={openProducts}
+        >
+          Ver productos
+        </div>
         <video
           ref={videoPlayer}
           muted
-          className="w-full md:w-[50%] max-h-[40vh] md:max-h-[600px]  object-contain"
+          className="w-full h-full  object-fill object-center"
+          onClick={() => setOpenProducts(false)}
         />
       </div>
     </main>
   );
-}
+};

@@ -53,7 +53,7 @@ export default function RootLayout({
             </Link>
           </div>
         </header>
-        <section className="h-full overflow-hidden"> {children}</section>
+        {children}
       </body>
     </html>
   );
