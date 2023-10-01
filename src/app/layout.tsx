@@ -19,20 +19,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="px-4 mt-4 flex justify-between gap-4 items-center">
-          <div className="relative h-[10vh] w-[20vw] max-w-[200px]">
+        <header className="px-2 lg:px-4 pt-4 flex justify-between gap-4 items-center">
+          <Link
+            className="relative h-[10vh] w-[20vw] max-w-[200px] min-w-[120px]"
+            href={"/"}
+          >
             <Image
               src={
                 "https://capzula.com/wp-content/uploads/2023/09/N0nQGy1vPm8uWXG5.svg"
               }
               alt={"logo"}
               fill
+              priority
             />
-          </div>
+          </Link>
           <input
             type="text"
             placeholder="Search for products"
-            className="w-full px-3 border h-10 rounded-lg max-w-[200px] lg:max-w-4xl shadow-md"
+            className="w-full px-3 border h-10 rounded-lg max-w-[180px] lg:max-w-4xl shadow-md"
           />
           <div className="lg:flex items-center gap-2 hidden">
             <Link
@@ -49,7 +53,7 @@ export default function RootLayout({
             </Link>
           </div>
         </header>
-        {children}
+        <section className="h-full overflow-hidden"> {children}</section>
       </body>
     </html>
   );

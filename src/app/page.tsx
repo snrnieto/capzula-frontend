@@ -1,59 +1,22 @@
-"use client";
-import io from "socket.io-client";
-import { useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Peer from "peerjs";
+import Link from "next/link";
 
 export default function Home() {
-  const peerClient = typeof window !== "undefined" ? new Peer() : ({} as Peer);
-  const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL ?? "localhost:3000", {
-    transports: ["websocket"],
-  });
-
-  let myuuid = uuidv4();
-
-  const videoRecorder = useRef<HTMLVideoElement>({} as HTMLVideoElement);
-
-  function connectToNewViewer(viewerId: string, stream: MediaStream) {
-    console.log("Calling viewer: " + viewerId);
-    peerClient.call(viewerId, stream);
-  }
-
-  function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
-    video.srcObject = stream;
-    video.addEventListener("loadedmetadata", async () => {
-      try {
-        await video.play();
-      } catch (error) {
-        alert("Video playback failed:" + error);
-      }
-    });
-  }
-
-  useEffect(() => {
-    videoRecorder.current.muted = true;
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true,
-        audio: true,
-      })
-      .then((stream) => {
-        console.log("My room id: " + myuuid);
-        addVideoStream(videoRecorder.current, stream);
-
-        socket.on("viewer-connected", (viewerId) => {
-          connectToNewViewer(viewerId, stream);
-        });
-
-        // create a room for the streamer
-        socket.emit("join", myuuid);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
-    <main>
-      <h1>Estas en vivo</h1>
-      <video ref={videoRecorder}></video>
+    <main className="flex justify-center items-center w-full h-screen max-h-[85vh]">
+      <section className="flex flex-col lg:flex-row justify-center items-center w-full text-center px-10 gap-8">
+        <Link
+          href={"/streamer"}
+          className="bg-orange-100 hover:bg-orange-200 hover:font-medium w-full border border-gray-300 shadow-sm rounded-md py-2 max-w-[250px]"
+        >
+          Iniciar Stream
+        </Link>
+        <Link
+          href={"/viewer"}
+          className="bg-amber-100 hover:bg-amber-200 hover:font-medium  w-full border border-gray-300 shadow-sm rounded-md py-2 max-w-[250px]"
+        >
+          Ver Stream
+        </Link>
+      </section>
     </main>
   );
 }

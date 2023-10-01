@@ -2,12 +2,13 @@
 import io from "socket.io-client";
 import Peer from "peerjs";
 import { useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   const { room_id } = useParams();
+  const router = useRouter();
 
   // Replace with your server URL
   const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL ?? "localhost:3001", {
@@ -16,7 +17,7 @@ export default function Home() {
 
   const myPeer = typeof window !== "undefined" ? new Peer() : ({} as Peer);
   const videoPlayer = useRef<HTMLVideoElement>({} as HTMLVideoElement);
-  const reload = window.location.reload.bind(window.location);
+  const reload = () => router.push("/viewer");
 
   useEffect(() => {
     videoPlayer.current.muted = true;
@@ -112,22 +113,25 @@ export default function Home() {
   ];
   return (
     <main>
-      <div className="grid grid-cols-2 gap-14 mt-10 px-10">
-        <div className="h-full max-h-[600px] overflow-hidden">
+      <div className="flex flex-col-reverse lg:flex-row gap-14 mt-10">
+        <div className="h-full max-h-[300px] lg:max-h-[600px] overflow-y-auto px-6">
           <h1 className="font-bold text-2xl mb-4">Productos</h1>
           <div className="flex flex-col gap-10 h-full overflow-y-auto pb-24 pr-2">
             {products.map((product) => (
               <div className="flex gap-5 h-full w-full" key={product.url}>
-                <div className="relative w-36 min-h-[150px]">
+                <div className="relative min-w-[100px] lg:min-w-[150px] min-h-[150px]">
                   <Image
                     src={product.image}
                     alt={product.name}
                     fill
+                    sizes="100vw"
                     className="rounded-tl-2xl"
                   />
                 </div>
                 <div className="flex flex-col justify-between w-full">
-                  <h2 className="font-bold text-3xl">{product.name}</h2>
+                  <h2 className="font-bold text-xl lg:text-3xl">
+                    {product.name}
+                  </h2>
                   <h3 className="font-bold">
                     By{" "}
                     <span className="underline text-[#3F5D71]">
@@ -146,7 +150,7 @@ export default function Home() {
                   <div className="flex justify-end w-full">
                     <Link
                       href={product.url}
-                      className="bg-orange-300 hover:bg-orange-400 rounded-full px-10 py-2 text-white font-semibold"
+                      className="bg-orange-300 hover:bg-orange-400 rounded-full px-6 lg:px-10 py-2 text-white font-semibold"
                     >
                       Comprar
                     </Link>
@@ -156,7 +160,11 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <video ref={videoPlayer} className="w-full h-[600px] object-cover" />
+        <video
+          ref={videoPlayer}
+          muted
+          className="w-full lg:w-[50%] object-cover"
+        />
       </div>
     </main>
   );

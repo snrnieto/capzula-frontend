@@ -11,15 +11,12 @@ export default function Home() {
     transports: ["websocket"],
   });
 
-  const videoPlayer = useRef<HTMLVideoElement>({} as HTMLVideoElement);
   const [roomList, setRoomList] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    videoPlayer.current.muted = true;
-
     socket.on("connect", () => {
-      console.log("Connected as viewer");
+      console.log("Connected as viewer list");
       socket.emit("get-rooms");
     });
 
@@ -82,7 +79,6 @@ export default function Home() {
           No hay modelos en vivo en este momento
         </h1>
       )}
-      <video ref={videoPlayer}></video>
     </main>
   );
 }
