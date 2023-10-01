@@ -1,6 +1,6 @@
 "use client";
 import io from "socket.io-client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Peer from "peerjs";
 
@@ -13,6 +13,7 @@ export default function Home() {
   let myuuid = uuidv4();
 
   const videoRecorder = useRef<HTMLVideoElement>({} as HTMLVideoElement);
+  const [stream, setStream] = useState<boolean>(false);
 
   function connectToNewViewer(viewerId: string, stream: MediaStream) {
     console.log("Calling viewer: " + viewerId);
@@ -21,6 +22,7 @@ export default function Home() {
 
   function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
     video.srcObject = stream;
+    setStream(true);
     video.addEventListener("loadedmetadata", async () => {
       video
         .play()
@@ -51,7 +53,7 @@ export default function Home() {
   }
   return (
     <main className="mt-10">
-      {videoRecorder.current.srcObject ? (
+      {stream ? (
         <h1 className="font-bold text-xl">Estás en vivo</h1>
       ) : (
         <button
